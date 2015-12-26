@@ -155,14 +155,19 @@ public class Cipher {
 	class runListener implements ActionListener {
 		public void actionPerformed (ActionEvent a){
 			deck = genDeck();
-	//		File noSecret = new File("!.txt");
-	//		BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
-	//		for (int i = 0; i < msg.size(); i++){
-	//			msg[i] = codify(msg[i]);
-	//			writer.write(joinChars(msg[i]));
-	//			if (i != (msg.size() - 1)){
-	//				writer.write("\n");
+	//		try{
+	//			File noSecret = new File("!.txt");
+	//			BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
+	//			for (int i = 0; i < msg.size(); i++){
+	//				msg[i] = codify(msg[i]);
+	//				writer.write(joinChars(msg[i]));
+	//				if (i != (msg.size() - 1)){
+	//					writer.write("\n");
+	//				}
 	//			}
+	//			writer.close();
+	//		} catch (Exception e){
+	//			e.printStackTrace();
 	//		}
 	//		aName = "";
 	//		fName = "";
@@ -179,12 +184,51 @@ public class Cipher {
 			deck.add(i);
 		}
 		System.out.println(deck);
-		//int n = (int) evoNum.getText();//Integer.parseInt(evoNum.getText())
-		//for (int i = 0; i < n; i++){
-			//evolve(deck);
-		//}
-		//System.out.println(deck);
+		int n = Integer.parseInt(evoNum.getText());
+		for (int i = 0; i < n; i++){
+			evolve(deck);
+		}
+		System.out.println(deck);
 		return deck;
+	}
+
+	private int evolve(ArrayList<Integer> list){ //get_next_keystream_value
+		int bJ = max(list);
+		int sJ = bJ - 1;
+		int ks = bJ;
+		//while (ks == bJ || ks == sJ){
+			moveJ(list, sJ);
+			moveJ(list, bJ);
+			moveJ(list, bJ);
+	//		tripleCut(list);
+	//		topToBot(list);
+	//		ks = getTopIndex(list);
+		//}
+		return ks;
+	}
+
+	private int max(ArrayList<Integer> list){
+		int max = 0;
+		for (int i = 0; i < (list.size()); i++){
+			max = Math.max(list.get(i), max);
+		}
+		return max;
+	}
+
+	private void moveJ(ArrayList<Integer> list, int sJ){
+		int i = list.indexOf(sJ);
+		swap(list, i);
+	}
+
+	private void swap(ArrayList<Integer> list, int index){
+		int guard = list.get(index);
+		if (index == (list.size() - 1)){
+			list.set(index, list.get(0));
+			list.set(0, guard);
+		} else {
+			list.set(index,list.get(index + 1));
+			list.set((index + 1), guard);
+		}
 	}
 
 	//codify 
