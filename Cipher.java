@@ -11,10 +11,13 @@ public class Cipher {
 	private JLabel fileName;
 	private String aName = "";
 	private String fName = "";
+	private ArrayList<Integer> deck;
 	private ArrayList<String> alpha;
 	private ArrayList<ArrayList<String>> msg;
 	private JRadioButton encMode;
 	private JRadioButton decMode;
+	private JTextField evoNum;
+	private File secret;
 
 	public static void main(String[] args) {
 		Cipher c = new Cipher();
@@ -32,7 +35,7 @@ public class Cipher {
 		fileb.addActionListener(new fileListener());
 		JLabel numCall = new JLabel("Evolution Time");
 		JLabel modeCall = new JLabel("Mode");
-		JTextField evoNum = new JTextField(10);
+		evoNum = new JTextField(10);
 		alphaName = new JLabel(aName);
 		fileName = new JLabel(fName);
 		encMode = new JRadioButton("Encrypt");
@@ -42,6 +45,7 @@ public class Cipher {
 		encMode.setSelected(true);
 		decMode.setSelected(!encMode.isSelected());
 		JButton run = new JButton("Run");
+		run.addActionListener(new runListener());
 
 		JPanel panel1 = new JPanel();
 		BoxLayout layout = new BoxLayout(panel1, BoxLayout.Y_AXIS);
@@ -72,12 +76,12 @@ public class Cipher {
 		panel1.add(run);
 
 		panel.add(panel1);
-		
+
+		frame.setSize(500,500);
 		frame.setVisible(true);
-		frame.setSize(400,400);
 	}
 
-	public class alphaListener implements ActionListener{
+	class alphaListener implements ActionListener{
 		public void actionPerformed(ActionEvent a){
 			alpha = chooseAlpha();
 			//System.out.println(alpha);
@@ -128,7 +132,8 @@ public class Cipher {
 		JFileChooser fileOpen = new JFileChooser( );
 		ArrayList<ArrayList<String>> msg = new ArrayList<ArrayList<String>>();
 		fileOpen.showOpenDialog(frame);
-		fName = fileOpen.getSelectedFile().getAbsolutePath();
+		secret = fileOpen.getSelectedFile();
+		fName = secret.getAbsolutePath();
 		fileName.setText(fName);
 		Object[] lines = loadText(fileOpen.getSelectedFile());
 		for (Object ob:lines){
@@ -146,4 +151,43 @@ public class Cipher {
 			}
 		}
 	}
+
+	class runListener implements ActionListener {
+		public void actionPerformed (ActionEvent a){
+			deck = genDeck();
+	//		File noSecret = new File("!.txt");
+	//		BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
+	//		for (int i = 0; i < msg.size(); i++){
+	//			msg[i] = codify(msg[i]);
+	//			writer.write(joinChars(msg[i]));
+	//			if (i != (msg.size() - 1)){
+	//				writer.write("\n");
+	//			}
+	//		}
+	//		aName = "";
+	//		fName = "";
+	//		evoNum.setText("");
+	//		evoNum.requestFocus();
+	//		secret.delete();
+		}
+	}
+
+	private ArrayList<Integer> genDeck(){
+		ArrayList<Integer> deck = new ArrayList<Integer>();
+		int m = alpha.size() + 2;
+		for (int i = 1; i <= m; i++){
+			deck.add(i);
+		}
+		System.out.println(deck);
+		//int n = (int) evoNum.getText();//Integer.parseInt(evoNum.getText())
+		//for (int i = 0; i < n; i++){
+			//evolve(deck);
+		//}
+		//System.out.println(deck);
+		return deck;
+	}
+
+	//codify 
+
+	//joinChars
 }
