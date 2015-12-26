@@ -13,6 +13,8 @@ public class Cipher {
 	private String fName = "";
 	private ArrayList<String> alpha;
 	private ArrayList<ArrayList<String>> msg;
+	private JRadioButton encMode;
+	private JRadioButton decMode;
 
 	public static void main(String[] args) {
 		Cipher c = new Cipher();
@@ -33,8 +35,12 @@ public class Cipher {
 		JTextField evoNum = new JTextField(10);
 		alphaName = new JLabel(aName);
 		fileName = new JLabel(fName);
-		JRadioButton encMode = new JRadioButton("Encrypt");
-		JRadioButton decMode = new JRadioButton("Decrypt");
+		encMode = new JRadioButton("Encrypt");
+		decMode = new JRadioButton("Decrypt");
+		encMode.addActionListener(new modeListener());
+		decMode.addActionListener(new modeListener());
+		encMode.setSelected(true);
+		decMode.setSelected(!encMode.isSelected());
 		JButton run = new JButton("Run");
 
 		JPanel panel1 = new JPanel();
@@ -74,14 +80,14 @@ public class Cipher {
 	public class alphaListener implements ActionListener{
 		public void actionPerformed(ActionEvent a){
 			alpha = chooseAlpha();
-			System.out.println(alpha);
+			//System.out.println(alpha);
 		}
 	}
 
 	class fileListener implements ActionListener{
 		public void actionPerformed(ActionEvent a){
 			msg = chooseFile();
-			System.out.println(msg);
+			//System.out.println(msg);
 		}
 	}
 
@@ -98,23 +104,23 @@ public class Cipher {
 
 	private Object[] loadText(File file){
 		String line = "";
-		Object[] letters = new Object[0];
+		Object[] text = new Object[0];
 		try{
 			BufferedReader reader = new BufferedReader(new FileReader(file));
-			letters = reader.lines().toArray();
+			text = reader.lines().toArray();
 			reader.close();
 			
 		} catch(Exception ex) {
 			System.out.println("There is no such file.");
 			ex.printStackTrace();
 		}
-		return letters;
+		return text;
 	}
 
 	private ArrayList<String> sepChars(Object ob){
 		ArrayList<String> chars = new ArrayList<String>();
 		String line = (String) ob;
-		chars.addAll(Arrays.asList(line.trim().split("")));
+		chars.addAll(Arrays.asList(line.split("")));
 		return chars; 
 	}
 
@@ -129,5 +135,15 @@ public class Cipher {
 			msg.add(sepChars(ob));
 		}
 		return msg;
+	}
+
+	class modeListener implements ActionListener {
+		public void actionPerformed (ActionEvent a){
+			if (a.getSource() == encMode){
+				decMode.setSelected(!encMode.isSelected());
+			} if (a.getSource() == decMode){
+				encMode.setSelected(!decMode.isSelected());
+			}
+		}
 	}
 }
