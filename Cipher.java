@@ -200,7 +200,7 @@ public class Cipher {
 			moveJ(list, sJ);
 			moveJ(list, bJ);
 			moveJ(list, bJ);
-	//		tripleCut(list);
+			tripleCut(list, sJ, bJ);
 	//		topToBot(list);
 	//		ks = getTopIndex(list);
 		//}
@@ -215,8 +215,8 @@ public class Cipher {
 		return max;
 	}
 
-	private void moveJ(ArrayList<Integer> list, int sJ){
-		int i = list.indexOf(sJ);
+	private void moveJ(ArrayList<Integer> list, int j){
+		int i = list.indexOf(j);
 		swap(list, i);
 	}
 
@@ -229,6 +229,23 @@ public class Cipher {
 			list.set(index,list.get(index + 1));
 			list.set((index + 1), guard);
 		}
+	}
+
+	private void tripleCut(ArrayList<Integer> list, int sJ, int bJ){
+		int fJIndex = Math.min(list.indexOf(sJ), list.indexOf(bJ));
+		int sJIndex = Math.max(list.indexOf(sJ), list.indexOf(bJ));
+		ArrayList<Integer> cut1 = new ArrayList<Integer> (list.subList(0, fJIndex));
+		ArrayList<Integer> cut2 = new ArrayList<Integer> (list.subList(fJIndex, (sJIndex + 1)));
+		ArrayList<Integer> cut3;
+		if (sJIndex != (list.size() - 1)){
+			cut3 = new ArrayList<Integer> (list.subList((sJIndex + 1), list.size()));
+		} else {
+			cut3 = new ArrayList<Integer> (list.subList(sJIndex, sJIndex));
+		}
+		list.removeAll(cut1);
+		list.removeAll(cut3);
+		list.addAll(cut1);
+		list.addAll(0, cut3);
 	}
 
 	//codify 
