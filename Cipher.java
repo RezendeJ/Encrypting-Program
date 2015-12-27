@@ -188,7 +188,7 @@ public class Cipher {
 		for (int i = 0; i < n; i++){
 			evolve(deck);
 		}
-		System.out.println(deck);
+		//System.out.println(deck);
 		return deck;
 	}
 
@@ -201,7 +201,9 @@ public class Cipher {
 			moveJ(list, bJ);
 			moveJ(list, bJ);
 			tripleCut(list, sJ, bJ);
-	//		topToBot(list);
+			System.out.println(list);
+			topToBot(list, bJ);
+			System.out.println(list);
 	//		ks = getTopIndex(list);
 		//}
 		return ks;
@@ -246,6 +248,16 @@ public class Cipher {
 		list.removeAll(cut3);
 		list.addAll(cut1);
 		list.addAll(0, cut3);
+	}
+
+	private void topToBot(ArrayList<Integer> list, int bJ){
+		int n = list.get(list.size() - 1);
+		if (n == bJ){
+			n--;
+		}
+		ArrayList<Integer> top = new ArrayList<Integer> (list.subList(0, n));
+		list.removeAll(top);
+		list.addAll((list.size() - 1), top);
 	}
 
 	//codify 
