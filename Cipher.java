@@ -137,6 +137,7 @@ public class Cipher {
 		for (Object ob:lines){
 			msg.add(sepChars(ob));
 		}
+		secret.delete();
 		return msg;
 	}
 
@@ -153,25 +154,23 @@ public class Cipher {
 	class runListener implements ActionListener {
 		public void actionPerformed (ActionEvent a){
 			deck = genDeck();
-			//try{
-			//	File noSecret = new File("D:/Dados/Desktop/CSC108/FULL CRYPTION PROGRAM/!.txt");
-			//	BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
+			try{
+				File noSecret = new File("!.txt");
+				BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
 				for (int i = 0; i < msg.size(); i++){
 					codify(msg.get(i), deck, alpha);
-					System.out.println(joinChars(msg.get(i)));//		writer.write(joinChars(msg.get(i)));
-			//		if (i != (msg.size() - 1)){
-			//			writer.write("\n");
-			//		}
+					writer.write(joinChars(msg.get(i)));
+					if (i != (msg.size() - 1)){
+						writer.write("\n");
+					}
 				}
-			//	writer.close();
-			//} catch (Exception e){
-			//	e.printStackTrace();
-			//}
-			aName = "";
-			fName = "";
+				writer.close();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+			fileName.setText("Choose another file.");
 			evoNum.setText("");
 			evoNum.requestFocus();
-			//secret.delete();
 		}
 	}
 
