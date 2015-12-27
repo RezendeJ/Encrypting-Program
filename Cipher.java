@@ -158,13 +158,14 @@ public class Cipher {
 	//		try{
 	//			File noSecret = new File("!.txt");
 	//			BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
-	//			for (int i = 0; i < msg.size(); i++){
-	//				msg[i] = codify(msg[i]);
+				for (int i = 0; i < msg.size(); i++){
+					codify(msg.get(i), deck, alpha);
+					System.out.println(msg.get(i));
 	//				writer.write(joinChars(msg[i]));
 	//				if (i != (msg.size() - 1)){
 	//					writer.write("\n");
 	//				}
-	//			}
+				}
 	//			writer.close();
 	//		} catch (Exception e){
 	//			e.printStackTrace();
@@ -183,7 +184,7 @@ public class Cipher {
 		for (int i = 1; i <= m; i++){
 			deck.add(i);
 		}
-		System.out.println(deck);
+		//System.out.println(deck);
 		int n = Integer.parseInt(evoNum.getText());
 		for (int i = 0; i < n; i++){
 			evolve(deck);
@@ -192,20 +193,20 @@ public class Cipher {
 		return deck;
 	}
 
-	private int evolve(ArrayList<Integer> list){ //get_next_keystream_value
+	private int evolve(ArrayList<Integer> list){
 		int bJ = max(list);
 		int sJ = bJ - 1;
 		int ks = bJ;
-		//while (ks == bJ || ks == sJ){
+		while (ks == bJ || ks == sJ){
 			moveJ(list, sJ);
 			moveJ(list, bJ);
 			moveJ(list, bJ);
 			tripleCut(list, sJ, bJ);
-			System.out.println(list);
+			//System.out.println(list);
 			topToBot(list, bJ);
-			System.out.println(list);
-	//		ks = getTopIndex(list);
-		//}
+			//System.out.println(list);
+			ks = getTopIndex(list, bJ);
+		}
 		return ks;
 	}
 
@@ -260,7 +261,31 @@ public class Cipher {
 		list.addAll((list.size() - 1), top);
 	}
 
-	//codify 
+	private int getTopIndex(ArrayList<Integer> list, int bJ){
+		int n = list.get(0);
+		if (n == bJ){
+			n--;
+		}
+		return list.get(n);
+	}
+
+	private void codify(ArrayList<String> line, ArrayList<Integer> deck, ArrayList<String> alpha){
+		int ks;
+		for (int i = 0; i < line.size(); i++){
+			ks = evolve(deck);
+			int n = alpha.indexOf(line.get(i));
+			if (encMode.isSelected()){
+				n = (n + ks) % alpha.size();
+			} else {
+				if((n - ks) >= 0){
+					n = (n - ks) % alpha.size();
+				} else {
+					n = (alpha.size() + n - ks) % alpha.size();
+				}
+			}
+			line.set(i, alpha.get(n)); 
+		}
+	}
 
 	//joinChars
 }
