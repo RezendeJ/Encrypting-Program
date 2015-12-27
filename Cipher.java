@@ -84,14 +84,12 @@ public class Cipher {
 	class alphaListener implements ActionListener{
 		public void actionPerformed(ActionEvent a){
 			alpha = chooseAlpha();
-			//System.out.println(alpha);
 		}
 	}
 
 	class fileListener implements ActionListener{
 		public void actionPerformed(ActionEvent a){
 			msg = chooseFile();
-			//System.out.println(msg);
 		}
 	}
 
@@ -155,26 +153,25 @@ public class Cipher {
 	class runListener implements ActionListener {
 		public void actionPerformed (ActionEvent a){
 			deck = genDeck();
-	//		try{
-	//			File noSecret = new File("!.txt");
-	//			BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
+			//try{
+			//	File noSecret = new File("D:/Dados/Desktop/CSC108/FULL CRYPTION PROGRAM/!.txt");
+			//	BufferedWriter writer = new BufferedWriter(new FileWriter(noSecret));			
 				for (int i = 0; i < msg.size(); i++){
 					codify(msg.get(i), deck, alpha);
-					System.out.println(msg.get(i));
-	//				writer.write(joinChars(msg[i]));
-	//				if (i != (msg.size() - 1)){
-	//					writer.write("\n");
-	//				}
+					System.out.println(joinChars(msg.get(i)));//		writer.write(joinChars(msg.get(i)));
+			//		if (i != (msg.size() - 1)){
+			//			writer.write("\n");
+			//		}
 				}
-	//			writer.close();
-	//		} catch (Exception e){
-	//			e.printStackTrace();
-	//		}
-	//		aName = "";
-	//		fName = "";
-	//		evoNum.setText("");
-	//		evoNum.requestFocus();
-	//		secret.delete();
+			//	writer.close();
+			//} catch (Exception e){
+			//	e.printStackTrace();
+			//}
+			aName = "";
+			fName = "";
+			evoNum.setText("");
+			evoNum.requestFocus();
+			//secret.delete();
 		}
 	}
 
@@ -184,12 +181,10 @@ public class Cipher {
 		for (int i = 1; i <= m; i++){
 			deck.add(i);
 		}
-		//System.out.println(deck);
 		int n = Integer.parseInt(evoNum.getText());
 		for (int i = 0; i < n; i++){
 			evolve(deck);
 		}
-		//System.out.println(deck);
 		return deck;
 	}
 
@@ -202,9 +197,7 @@ public class Cipher {
 			moveJ(list, bJ);
 			moveJ(list, bJ);
 			tripleCut(list, sJ, bJ);
-			//System.out.println(list);
 			topToBot(list, bJ);
-			//System.out.println(list);
 			ks = getTopIndex(list, bJ);
 		}
 		return ks;
@@ -287,5 +280,11 @@ public class Cipher {
 		}
 	}
 
-	//joinChars
+	private String joinChars(ArrayList<String> letters){
+		String line = "";
+		for (String c:letters){
+			line = line.concat(c);
+		}
+		return line;
+	}
 }
