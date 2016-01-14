@@ -55,24 +55,14 @@ class Window {
 		sourceB.addActionListener(new chooseListener());
 		sourceName = new JLabel(sourceAddress);
 
-		/*JLabel contextL = new JLabel("Context");
-		JSpinner spin = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
-
-		contextPanel.add(contextL);
-		contextPanel.add(spin);*/
-
 		JButton addB = new JButton("Add");
 		addB.addActionListener(new addWordListener());
 
 		JButton resetB = new JButton("Reset");
-		//resetB.addActionListener(new resetListener());
-
-		JButton saveB = new JButton("Save");
-		//saveB.addActionListener(new saveListener());
+		resetB.addActionListener(new resetListener());
 
 		botPanel.add(addB);
 		botPanel.add(resetB);
-		botPanel.add(saveB);
 
 		text = new JTextArea(25, 50);
 		text.setEditable(false);
@@ -86,8 +76,6 @@ class Window {
 		mainPanel.add(sourceB);
 		sourceName.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		mainPanel.add(sourceName);
-		/*contextPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		mainPanel.add(contextPanel);*/
 		scroll.setAlignmentX(JScrollPane.CENTER_ALIGNMENT);
 		mainPanel.add(scroll);
 		botPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
@@ -125,6 +113,12 @@ class Window {
 			}
 			lastContext = contexts.get(ran.nextInt(contexts.size()));
 			text.append(lastContext + " ");
+		}
+	}
+
+	class resetListener implements ActionListener {
+		public void actionPerformed(ActionEvent a) {
+			text.setText("");
 		}
 	}
 }
