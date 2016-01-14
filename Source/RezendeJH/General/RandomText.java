@@ -35,6 +35,9 @@ class Window {
 	JTextArea text;
 	File source;
 	Dict dictio;
+	Random ran = new Random();
+	String lastContext = "";
+	ArrayList<String> contexts = new ArrayList<String>();
 
 	public Window() {
 		frame = new JFrame();
@@ -52,13 +55,14 @@ class Window {
 		sourceB.addActionListener(new chooseListener());
 		sourceName = new JLabel(sourceAddress);
 
-		JLabel contextL = new JLabel("Context");
+		/*JLabel contextL = new JLabel("Context");
 		JSpinner spin = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
+
 		contextPanel.add(contextL);
-		contextPanel.add(spin);
+		contextPanel.add(spin);*/
 
 		JButton addB = new JButton("Add");
-		//addB.addActionListener(new addWordListener());
+		addB.addActionListener(new addWordListener());
 
 		JButton resetB = new JButton("Reset");
 		//resetB.addActionListener(new resetListener());
@@ -82,8 +86,8 @@ class Window {
 		mainPanel.add(sourceB);
 		sourceName.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		mainPanel.add(sourceName);
-		contextPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		mainPanel.add(contextPanel);
+		/*contextPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+		mainPanel.add(contextPanel);*/
 		scroll.setAlignmentX(JScrollPane.CENTER_ALIGNMENT);
 		mainPanel.add(scroll);
 		botPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT);
@@ -98,8 +102,7 @@ class Window {
 			chooseFile();
 			TextLoader tL = new TextLoader(source);
 			dictio = new Dict(tL);
-			dictio.build(1);
-			System.out.println(dictio.contextToWords);
+			dictio.build();
 		}
 	}
 
@@ -111,7 +114,19 @@ class Window {
 		sourceName.setText(sourceAddress);
 	}
 
+	class addWordListener implements ActionListener {
+		public void actionPerformed(ActionEvent a) {
+			if(lastContext.isEmpty() || dictio.contextToWords.get(lastContext).isEmpty()) {
+				contexts = dictio.words;
 
+			} else {
+				contexts = dictio.contextToWords.get(lastContext);
+				
+			}
+			lastContext = contexts.get(ran.nextInt(contexts.size()));
+			text.append(lastContext + " ");
+		}
+	}
 }
 
 class TextLoader {
@@ -154,16 +169,16 @@ class Dict {
 		}
 	}
 
-	public void build(int contextSize) {
+	public void build() {
 		
-		for(int i = 0; i < words.size() - (contextSize - 1); i++) {
+		for(int i = 0; i < words.size(); i++) {
 			String key = "";
 			ArrayList<String> value = new ArrayList<String>();
-			for(int j = 0; j < contextSize; j++) {
-				key = key + words.get(i) + " ";
+			for(int j = 0; j < 1; j++) {
+				key = words.get(i);
 			}
-			if(i !=  words.size() - contextSize) {
-				value.add(words.get(i + contextSize));
+			if(i !=  words.size() - 1) {
+				value.add(words.get(i + 1));
 			}
 			if(contextToWords.containsKey(key)) {
 				ArrayList<String> oldValue = contextToWords.get(key);
@@ -177,10 +192,5 @@ class Dict {
 		}
 	}
 
-	public String[] getContexts() {
-		Object[] protoContexts = contextToWords.keySet().toArray();
-		String[] contexts = Arrays.copyOf(protoContexts, protoContexts.length, String[].class);
-		return contexts;
-	}
 }
 
